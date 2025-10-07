@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Producto</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+    <h1>Agregar Producto</h1>
+    <form method="POST" action="{{ url_for('agregar') }}">
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre" id="nombre" required>
+
+        <label for="precio">Precio:</label>
+        <input type="number" name="precio" id="precio" required step="0.01">
+
+        <button type="submit">Agregar</button>
+    </form>
+    <a href="{{ url_for('listar') }}">Volver a la lista</a>
+</body>
+</html>

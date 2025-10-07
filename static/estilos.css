@@ -1,0 +1,85 @@
+/* Estilo general de la página */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 20px;
+    padding: 0;
+}
+
+/* Títulos */
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+/* Enlaces */
+a {
+    color: #0066cc;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+/* Efecto visual al pasar el mouse sobre los enlaces */
+a:hover {
+    text-decoration: underline;
+}
+
+/* Formulario */
+form {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 16px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Inputs y botones dentro del formulario */
+input, button {
+    width: 100%;
+    padding: 8px;
+    margin-top: 6px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Botón principal del formulario*/
+button {
+    background-color: #0066cc;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Efecto al pasar el mouse sobre el botón */
+button:hover {
+    background-color: #004a99;
+}
+
+/* Tabla de productos: define el diseño general */
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;  /* elimina los espacios entre bordes */
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Celdas y encabezados: espaciamiento y borde inferior */
+th, td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Encabezado de la tabla: color de fondo y texto */
+th {
+    background-color: #0066cc;
+    color: white;
+}
+
+/* Efecto al pasar el mouse sobre las filas */
+tr:hover {
+    background-color: #f1f1f1;
+}
