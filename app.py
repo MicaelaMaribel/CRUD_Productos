@@ -1,45 +1,64 @@
 from flask import Flask, render_template, request, redirect, url_for
+import mysql.connector
 
 app = Flask(__name__)
 
-# Lista para guardar los productos temporalmente
-productos = []
-# Cada producto será un diccionario con id, nombre y precio
+# Crear la conexion a la base de datos
+conexion = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="ringo2001",
+    database="bd_productos"
+)
 
 # Ruta principal: listar productos
 @app.route('/')
 def listar():
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM productos")
+    productos = cursor.fetchall()
+    cursor.close()
+
     return render_template('listar.html', productos=productos)
 
 # Ruta para mostrar el formulario de agregar producto
 @app.route('/agregar', methods=['GET', 'POST'])
 def agregar():
     if request.method == 'POST':
-        # Capturamos los datos del formulario
         nombre = request.form['nombre']
         precio = request.form['precio']
-        producto = {
-            'id': len(productos)+1,  # ID automático
-            'nombre': nombre,
-            'precio': precio
-        }
-        productos.append(producto)  # Agregamos a la lista
-        return redirect(url_for('listar'))  # Volvemos a la lista
 
-    return render_template('formulario.html')  # GET muestra el formulario
+        cursor = conexion.cursor()
+        sql = "INSERT INTO productos (nombre, precio) VALUES (%s, %s)"
+        cursor.execute(sql, (nombre, precio))
+        conexion.commit()
+        cursor.close()
+
+        return redirect(url_for('listar'))
+
+    return render_template('formulario.html')
+
 
 # Ruta para editar un producto
 @app.route('/editar/<int:id>', methods=['GET', 'POST'])
 def editar(id):
-    # Buscamos el producto por id
-    producto = next((p for p in productos if p['id'] == id), None)
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM productos WHERE id = %s", (id,))
+    producto = cursor.fetchone()
+    cursor.close()
+
     if not producto:
         return "Producto no encontrado"
 
     if request.method == 'POST':
-        # Actualizamos los datos
-        producto['nombre'] = request.form['nombre']
-        producto['precio'] = request.form['precio']
+        nombre = request.form['nombre']
+        precio = request.form['precio']
+
+        cursor = conexion.cursor()
+        cursor.execute("UPDATE productos SET nombre=%s, precio=%s WHERE id=%s", (nombre, precio, id))
+        conexion.commit()
+        cursor.close()
+
         return redirect(url_for('listar'))
 
     return render_template('editar.html', producto=producto)
@@ -47,9 +66,12 @@ def editar(id):
 # Ruta para eliminar un producto
 @app.route('/eliminar/<int:id>')
 def eliminar(id):
-    global productos
-    productos = [p for p in productos if p['id'] != id]
+    cursor = conexion.cursor()
+    cursor.execute("DELETE FROM productos WHERE id = %s", (id,))
+    conexion.commit()
+    cursor.close()
     return redirect(url_for('listar'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='127.0.0.1', port=5000, debug=True)
+
